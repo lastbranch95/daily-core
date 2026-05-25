@@ -2,14 +2,14 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Daily Core" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Daily Core v0.9</title>
+  <title>Daily Core v1.0</title>
 
   <!--
-    Daily Core v0.9
+    Daily Core v1.0
     ============================================================
     無料・スマホ利用前提の1ファイルWebアプリです。
 
@@ -85,6 +85,7 @@
     select,
     textarea {
       font: inherit;
+      touch-action: manipulation;
     }
 
     button {
@@ -114,9 +115,9 @@
 
     .header-top {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .header-main-line {
@@ -144,12 +145,24 @@
     }
 
     .mode-badge {
-      padding: 3px 7px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.15);
-      font-size: 0.66rem;
-      white-space: nowrap;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.34), transparent 34%),
+        rgba(255, 255, 255, 0.16);
+      color: #fff;
+      font-size: 0.68rem;
+      line-height: 1.08;
+      font-weight: 900;
+      text-align: center;
+      white-space: normal;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.26),
+        0 8px 16px rgba(15, 23, 42, 0.14);
     }
 
     .mind-card {
@@ -533,9 +546,14 @@
     }
 
     .input,
+    .select,
+    .textarea {
+      font-size: 16px;
+    }
+
+    .input,
     .select {
       min-height: 42px;
-      font-size: 0.92rem;
     }
 
     .input:focus,
@@ -1001,6 +1019,39 @@
       font-size: 0.88rem;
     }
 
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(86px + env(safe-area-inset-bottom));
+      transform: translateX(-50%) translateY(18px);
+      z-index: 50;
+      max-width: min(92vw, 420px);
+      padding: 11px 14px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.94);
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 850;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      input,
+      select,
+      textarea {
+        font-size: 16px !important;
+      }
+    }
+
     .bottom-nav {
       position: fixed;
       left: 50%;
@@ -1080,7 +1131,40 @@
         overflow: hidden;
       }
 
-      .bottom-nav {
+  
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(86px + env(safe-area-inset-bottom));
+      transform: translateX(-50%) translateY(18px);
+      z-index: 50;
+      max-width: min(92vw, 420px);
+      padding: 11px 14px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.94);
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 850;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      input,
+      select,
+      textarea {
+        font-size: 16px !important;
+      }
+    }
+
+    .bottom-nav {
         border-bottom-left-radius: 28px;
         border-bottom-right-radius: 28px;
       }
@@ -1502,6 +1586,8 @@
       </section>
     </main>
 
+    <div class="toast" id="appToast" role="status" aria-live="polite"></div>
+
     <nav class="bottom-nav" aria-label="下部ナビゲーション">
       <button class="nav-button active" type="button" data-view="home">ホーム</button>
       <button class="nav-button" type="button" data-view="tasks">一覧</button>
@@ -1528,8 +1614,8 @@
       event listener = 入力・クリックを受け取る場所
     */
 
-    const STORAGE_KEY = "dailyCoreData_v09";
-    const OLD_KEYS = ["dailyCoreData_v08", "dailyCoreData_v07", "dailyCoreData_v06", "dailyCoreData_v05", "dailyCoreData_v04", "dailyCoreData_v03", "dailyCoreData_v02", "dailyCoreData_v01"];
+    const STORAGE_KEY = "dailyCoreData_v10";
+    const OLD_KEYS = ["dailyCoreData_v09", "dailyCoreData_v08", "dailyCoreData_v07", "dailyCoreData_v06", "dailyCoreData_v05", "dailyCoreData_v04", "dailyCoreData_v03", "dailyCoreData_v02", "dailyCoreData_v01"];
     const DAY_NAMES = ["日", "月", "火", "水", "木", "金", "土"];
 
     const initialData = {
@@ -1819,6 +1905,21 @@
       return Math.round((tasks.filter(task => task.completed).length / tasks.length) * 100);
     }
 
+    let toastTimer = null;
+
+    function showToast(message) {
+      const toast = document.getElementById("appToast");
+      if (!toast) return;
+
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1800);
+    }
+
     function addTaskFromForm() {
       const title = document.getElementById("taskTitle").value.trim();
       if (!title) return;
@@ -1857,6 +1958,7 @@
 
       state.tasks.push(task);
       saveData();
+      showToast(`追加しました：${title}`);
       document.getElementById("taskTitle").value = "";
       document.getElementById("taskUrl").value = "";
       document.getElementById("taskNote").value = "";
@@ -1875,7 +1977,9 @@
     function toggleTask(taskId, originDate) {
       const current = getCompletion(originDate, taskId);
       setCompletion(originDate, taskId, !current);
+      const task = state.tasks.find(item => item.id === taskId);
       saveData();
+      if (task) showToast(current ? `未完了に戻しました：${task.title}` : `完了：${task.title}`);
       renderAll();
     }
 
@@ -1894,6 +1998,7 @@
 
       state.tasks = state.tasks.filter(item => item.id !== taskId);
       saveData();
+      showToast(`削除しました：${task.title}`);
       renderAll();
     }
 
@@ -1911,6 +2016,7 @@
       state.tasks.push(restored);
       state.deletedTasks = state.deletedTasks.filter(item => item.id !== taskId);
       saveData();
+      showToast(`復帰しました：${restored.title}`);
       renderAll();
     }
 
@@ -1965,7 +2071,7 @@
       saveData();
       saveTodayReview();
       renderAll();
-      alert(`未完了タスク ${carryTargets.length}件を明日に持ち越しました。`);
+      showToast(`今日を保存。${carryTargets.length}件を明日に送りました。`);
     }
 
     function saveTodayReview() {
@@ -1998,7 +2104,7 @@
       state.reviews.push(review);
       saveData();
       renderAll();
-      alert("今日のレビューを保存しました。");
+      showToast("今日のレビューを保存しました。");
     }
 
     function getTodayReview() {
