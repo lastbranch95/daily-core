@@ -6,10 +6,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Daily Core" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Daily Core v1.0</title>
+  <title>Daily Core v1.4</title>
 
   <!--
-    Daily Core v1.0
+    Daily Core v1.4
     ============================================================
     無料・スマホ利用前提の1ファイルWebアプリです。
 
@@ -74,10 +74,11 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
       color: var(--text);
-      background: radial-gradient(circle at top left, #1d4ed8 0, transparent 28%),
-                  linear-gradient(160deg, #0f172a 0%, #111827 45%, #1e293b 100%);
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.26) 0, transparent 30%),
+        linear-gradient(160deg, #0b1120 0%, #111827 48%, #172033 100%);
     }
 
     button,
@@ -106,8 +107,8 @@
       color: #fff;
       padding: calc(8px + env(safe-area-inset-top)) 12px 9px;
       background:
-        radial-gradient(circle at top right, rgba(96, 165, 250, 0.32), transparent 35%),
-        linear-gradient(135deg, #0f172a, #1e3a8a 72%, #312e81);
+        radial-gradient(circle at top right, rgba(147, 197, 253, 0.26), transparent 34%),
+        linear-gradient(135deg, #0b1220, #1d4ed8 78%, #312e81);
       border-bottom-left-radius: 14px;
       border-bottom-right-radius: 14px;
       box-shadow: var(--shadow);
@@ -122,31 +123,30 @@
 
     .header-main-line {
       display: flex;
-      align-items: baseline;
-      gap: 8px;
+      align-items: center;
       min-width: 0;
     }
 
     .app-title {
-      margin: 0;
-      font-size: 0.82rem;
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-      opacity: 0.82;
+      display: none;
     }
 
     .today-label {
       margin-top: 0;
-      font-size: 0.78rem;
-      opacity: 0.86;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "Hiragino Sans", sans-serif;
+      font-size: clamp(1.35rem, 6.6vw, 1.85rem);
+      line-height: 1;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+      opacity: 0.98;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     .mode-badge {
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
       display: grid;
       place-items: center;
       border-radius: 50%;
@@ -154,8 +154,8 @@
         radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.34), transparent 34%),
         rgba(255, 255, 255, 0.16);
       color: #fff;
-      font-size: 0.68rem;
-      line-height: 1.08;
+      font-size: 0.64rem;
+      line-height: 1.05;
       font-weight: 900;
       text-align: center;
       white-space: normal;
@@ -195,10 +195,10 @@
     .section {
       margin-bottom: 9px;
       padding: 11px;
-      border-radius: var(--radius);
-      background: var(--card);
-      border: 1px solid rgba(229, 231, 235, 0.9);
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.075);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
     }
 
     .section-title-row {
@@ -1052,6 +1052,365 @@
       }
     }
 
+
+    body.dark-mode {
+      --surface: #0f172a;
+      --card: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --line: #334155;
+      --accent-soft: #1e3a8a;
+      background: #020617;
+    }
+    body.dark-mode .app-shell { background: #0f172a; }
+
+    body.dark-mode .section {
+      background: rgba(17, 24, 39, 0.96);
+    }
+
+    body.dark-mode .section,
+    body.dark-mode .task-item,
+    body.dark-mode .manager-row,
+    body.dark-mode .mindset-item,
+    body.dark-mode .stat-card,
+    body.dark-mode .mini-card,
+    body.dark-mode .compact-extra-panel,
+    body.dark-mode .empty-message,
+    body.dark-mode .calendar-cell,
+    body.dark-mode .calendar-detail {
+      background: #111827;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+    body.dark-mode .input,
+    body.dark-mode .select,
+    body.dark-mode .textarea {
+      background: #020617;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+
+    body.dark-mode .ghost-button {
+      background: #1e293b;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+
+    body.dark-mode .primary-button {
+      color: #fff;
+    }
+
+    body.dark-mode .bottom-nav {
+      background: rgba(15, 23, 42, 0.94);
+      border-color: #334155;
+    }
+    body.dark-mode .nav-button { color: #94a3b8; }
+    body.dark-mode .nav-button.active {
+      background: #1e3a8a;
+      color: #dbeafe;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 7px;
+    }
+    .settings-button {
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255,255,255,0.26);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.13);
+      color: #fff;
+      font-weight: 950;
+      display: grid;
+      place-items: center;
+    }
+    .status-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .status-chip {
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 0.68rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    .status-chip.active {
+      background: rgba(255,255,255,0.9);
+      color: #1e3a8a;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(2, 6, 23, 0.54);
+      display: grid;
+      align-items: end;
+    }
+    .modal-panel {
+      width: min(100%, 560px);
+      margin: 0 auto;
+      max-height: 86vh;
+      overflow: auto;
+      background: var(--surface);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 14px;
+      box-shadow: 0 -18px 48px rgba(0,0,0,0.24);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .modal-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 950;
+    }
+    .modal-close {
+      border: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      color: #334155;
+      font-weight: 950;
+    }
+    .detail-line {
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    .detail-line strong {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      margin-bottom: 2px;
+    }
+    .manager-actions {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      gap: 4px;
+      justify-content: end;
+    }
+    .tiny-button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #334155;
+      border-radius: 10px;
+      min-width: 28px;
+      height: 28px;
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+    body.dark-mode .tiny-button,
+    body.dark-mode .modal-close {
+      background: #1e293b;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+    .danger-zone {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid #fecaca;
+      background: #fff1f2;
+    }
+    body.dark-mode .danger-zone {
+      background: #450a0a;
+      border-color: #991b1b;
+    }
+    .calendar-cell { cursor: pointer; }
+    .calendar-cell.has-review {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+    body.dark-mode .calendar-cell.has-review {
+      background: #172554;
+      border-color: #2563eb;
+    }
+    .calendar-detail {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+
+    .settings-modal-panel .section {
+      margin-bottom: 9px;
+      padding: 12px;
+    }
+
+    .settings-modal-panel .section-title,
+    .settings-modal-panel .section-subtitle,
+    .settings-modal-panel summary,
+    .settings-modal-panel label,
+    .settings-modal-panel p {
+      color: var(--text);
+    }
+
+    body.dark-mode .settings-modal-panel {
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .settings-modal-panel .section-subtitle,
+    body.dark-mode .settings-modal-panel .field-hint {
+      color: #cbd5e1;
+    }
+
+    body.dark-mode .settings-modal-panel summary {
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .danger-zone .section-subtitle {
+      color: #fecaca;
+    }
+
+    .status-single {
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+
+    .status-header-select {
+      appearance: none;
+      -webkit-appearance: none;
+      max-width: 132px;
+      border: 1px solid rgba(255,255,255,0.62);
+      background-color: rgba(255,255,255,0.94);
+      color: #0f172a;
+      border-radius: 999px;
+      padding: 6px 24px 6px 10px;
+      font-size: 0.74rem;
+      font-weight: 900;
+      outline: none;
+      background-image: linear-gradient(45deg, transparent 50%, #1e3a8a 50%), linear-gradient(135deg, #1e3a8a 50%, transparent 50%);
+      background-position: calc(100% - 13px) 50%, calc(100% - 8px) 50%;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+    }
+
+    .status-header-select option {
+      color: #0f172a;
+      background: #fff;
+    }
+
+    body.dark-mode .status-header-select {
+      background-color: rgba(255,255,255,0.95);
+      color: #0f172a;
+      border-color: rgba(255,255,255,0.62);
+    }
+
+    .drag-handle {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 10px;
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 1.05rem;
+      font-weight: 950;
+      display: grid;
+      place-items: center;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    .manager-row.dragging {
+      opacity: 0.6;
+      transform: scale(0.99);
+      border-color: #93c5fd;
+      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.16);
+    }
+
+    .manager-row.drag-over {
+      border-color: #2563eb;
+      box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.18);
+    }
+
+    body.dark-mode .drag-handle {
+      background: #1e293b;
+      color: #cbd5e1;
+    }
+
+    body.dark-mode .danger-zone {
+      background: #2b0b0b;
+      border-color: #7f1d1d;
+      color: #fee2e2;
+    }
+
+    body.dark-mode .danger-zone,
+    body.dark-mode .danger-zone * {
+      color: #fee2e2 !important;
+    }
+
+    body.dark-mode .danger-zone .danger-button {
+      background: #7f1d1d;
+      color: #fff !important;
+      border-color: #991b1b;
+    }
+
+    @media (max-width: 390px) {
+      .today-label {
+        font-size: clamp(1.24rem, 6.2vw, 1.65rem);
+      }
+
+      .status-header-select {
+        max-width: 112px;
+        font-size: 0.68rem;
+      }
+    }
+
+
+    #backupArea {
+      min-height: 120px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px !important;
+      line-height: 1.35;
+    }
+
+    .copy-flash {
+      animation: copyPulse 0.35s ease;
+    }
+
+    @keyframes copyPulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.0); }
+      50% { box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.0); }
+    }
+
     .bottom-nav {
       position: fixed;
       left: 50%;
@@ -1164,6 +1523,365 @@
       }
     }
 
+
+    body.dark-mode {
+      --surface: #0f172a;
+      --card: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --line: #334155;
+      --accent-soft: #1e3a8a;
+      background: #020617;
+    }
+    body.dark-mode .app-shell { background: #0f172a; }
+
+    body.dark-mode .section {
+      background: rgba(17, 24, 39, 0.96);
+    }
+
+    body.dark-mode .section,
+    body.dark-mode .task-item,
+    body.dark-mode .manager-row,
+    body.dark-mode .mindset-item,
+    body.dark-mode .stat-card,
+    body.dark-mode .mini-card,
+    body.dark-mode .compact-extra-panel,
+    body.dark-mode .empty-message,
+    body.dark-mode .calendar-cell,
+    body.dark-mode .calendar-detail {
+      background: #111827;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+    body.dark-mode .input,
+    body.dark-mode .select,
+    body.dark-mode .textarea {
+      background: #020617;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+
+    body.dark-mode .ghost-button {
+      background: #1e293b;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+
+    body.dark-mode .primary-button {
+      color: #fff;
+    }
+
+    body.dark-mode .bottom-nav {
+      background: rgba(15, 23, 42, 0.94);
+      border-color: #334155;
+    }
+    body.dark-mode .nav-button { color: #94a3b8; }
+    body.dark-mode .nav-button.active {
+      background: #1e3a8a;
+      color: #dbeafe;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 7px;
+    }
+    .settings-button {
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255,255,255,0.26);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.13);
+      color: #fff;
+      font-weight: 950;
+      display: grid;
+      place-items: center;
+    }
+    .status-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .status-chip {
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 0.68rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    .status-chip.active {
+      background: rgba(255,255,255,0.9);
+      color: #1e3a8a;
+    }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(2, 6, 23, 0.54);
+      display: grid;
+      align-items: end;
+    }
+    .modal-panel {
+      width: min(100%, 560px);
+      margin: 0 auto;
+      max-height: 86vh;
+      overflow: auto;
+      background: var(--surface);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 14px;
+      box-shadow: 0 -18px 48px rgba(0,0,0,0.24);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .modal-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 950;
+    }
+    .modal-close {
+      border: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      color: #334155;
+      font-weight: 950;
+    }
+    .detail-line {
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    .detail-line strong {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      margin-bottom: 2px;
+    }
+    .manager-actions {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      gap: 4px;
+      justify-content: end;
+    }
+    .tiny-button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #334155;
+      border-radius: 10px;
+      min-width: 28px;
+      height: 28px;
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+    body.dark-mode .tiny-button,
+    body.dark-mode .modal-close {
+      background: #1e293b;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+    .danger-zone {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid #fecaca;
+      background: #fff1f2;
+    }
+    body.dark-mode .danger-zone {
+      background: #450a0a;
+      border-color: #991b1b;
+    }
+    .calendar-cell { cursor: pointer; }
+    .calendar-cell.has-review {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+    body.dark-mode .calendar-cell.has-review {
+      background: #172554;
+      border-color: #2563eb;
+    }
+    .calendar-detail {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+
+    .settings-modal-panel .section {
+      margin-bottom: 9px;
+      padding: 12px;
+    }
+
+    .settings-modal-panel .section-title,
+    .settings-modal-panel .section-subtitle,
+    .settings-modal-panel summary,
+    .settings-modal-panel label,
+    .settings-modal-panel p {
+      color: var(--text);
+    }
+
+    body.dark-mode .settings-modal-panel {
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .settings-modal-panel .section-subtitle,
+    body.dark-mode .settings-modal-panel .field-hint {
+      color: #cbd5e1;
+    }
+
+    body.dark-mode .settings-modal-panel summary {
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .danger-zone .section-subtitle {
+      color: #fecaca;
+    }
+
+    .status-single {
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+
+    .status-header-select {
+      appearance: none;
+      -webkit-appearance: none;
+      max-width: 132px;
+      border: 1px solid rgba(255,255,255,0.62);
+      background-color: rgba(255,255,255,0.94);
+      color: #0f172a;
+      border-radius: 999px;
+      padding: 6px 24px 6px 10px;
+      font-size: 0.74rem;
+      font-weight: 900;
+      outline: none;
+      background-image: linear-gradient(45deg, transparent 50%, #1e3a8a 50%), linear-gradient(135deg, #1e3a8a 50%, transparent 50%);
+      background-position: calc(100% - 13px) 50%, calc(100% - 8px) 50%;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+    }
+
+    .status-header-select option {
+      color: #0f172a;
+      background: #fff;
+    }
+
+    body.dark-mode .status-header-select {
+      background-color: rgba(255,255,255,0.95);
+      color: #0f172a;
+      border-color: rgba(255,255,255,0.62);
+    }
+
+    .drag-handle {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 10px;
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 1.05rem;
+      font-weight: 950;
+      display: grid;
+      place-items: center;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    .manager-row.dragging {
+      opacity: 0.6;
+      transform: scale(0.99);
+      border-color: #93c5fd;
+      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.16);
+    }
+
+    .manager-row.drag-over {
+      border-color: #2563eb;
+      box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.18);
+    }
+
+    body.dark-mode .drag-handle {
+      background: #1e293b;
+      color: #cbd5e1;
+    }
+
+    body.dark-mode .danger-zone {
+      background: #2b0b0b;
+      border-color: #7f1d1d;
+      color: #fee2e2;
+    }
+
+    body.dark-mode .danger-zone,
+    body.dark-mode .danger-zone * {
+      color: #fee2e2 !important;
+    }
+
+    body.dark-mode .danger-zone .danger-button {
+      background: #7f1d1d;
+      color: #fff !important;
+      border-color: #991b1b;
+    }
+
+    @media (max-width: 390px) {
+      .today-label {
+        font-size: clamp(1.24rem, 6.2vw, 1.65rem);
+      }
+
+      .status-header-select {
+        max-width: 112px;
+        font-size: 0.68rem;
+      }
+    }
+
+
+    #backupArea {
+      min-height: 120px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px !important;
+      line-height: 1.35;
+    }
+
+    .copy-flash {
+      animation: copyPulse 0.35s ease;
+    }
+
+    @keyframes copyPulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.0); }
+      50% { box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.0); }
+    }
+
     .bottom-nav {
         border-bottom-left-radius: 28px;
         border-bottom-right-radius: 28px;
@@ -1190,11 +1908,15 @@
     <header class="app-header">
       <div class="header-top">
         <div class="header-main-line">
-          <h1 class="app-title">DC</h1>
+          <h1 class="app-title" aria-hidden="true"></h1>
           <div class="today-label" id="todayLabel">----</div>
         </div>
-        <div class="mode-badge" id="modeBadge">---</div>
+        <div class="header-actions">
+          <button class="settings-button" type="button" id="openSettingsButton" aria-label="設定">⚙</button>
+          <div class="mode-badge" id="modeBadge">---</div>
+        </div>
       </div>
+      <div class="status-row" id="statusRow"></div>
 
       <div class="mind-card">
         <p class="mind-label" id="mindLabel">今の一言</p>
@@ -1555,6 +2277,7 @@
           <h2 class="section-title">カレンダー</h2>
           <p class="section-subtitle">今月の達成率を日付ごとに確認。</p>
           <div id="calendarArea"></div>
+          <div id="calendarDetail" class="calendar-detail hidden"></div>
         </div>
 
         <div class="section">
@@ -1579,12 +2302,155 @@
           <h2 class="section-title">データ管理</h2>
           <p class="section-subtitle">端末内保存なので、たまにバックアップ推奨。</p>
           <button class="ghost-button" type="button" id="exportButton">JSONを書き出す</button>
+          <button class="ghost-button" type="button" id="copyBackupButton" style="margin-top: 8px;">JSONを全コピー</button>
           <button class="ghost-button" type="button" id="importButton" style="margin-top: 8px;">JSONを読み込む</button>
-          <button class="ghost-button danger-button" type="button" id="resetAllButton" style="margin-top: 8px;">全データ初期化</button>
+          <!-- 全データ初期化は設定パネル内へ移動 -->
           <textarea class="textarea" id="backupArea" placeholder="書き出し・読み込み用JSON" style="margin-top: 10px;"></textarea>
         </div>
       </section>
     </main>
+
+    
+    <div class="modal-backdrop hidden" id="settingsModal">
+      <div class="modal-panel settings-modal-panel">
+        <div class="modal-head">
+          <h2 class="modal-title">設定</h2>
+          <button class="modal-close" type="button" id="closeSettingsButton">×</button>
+        </div>
+        <div class="section">
+          <h2 class="section-title">表示</h2>
+          <button class="ghost-button" type="button" id="toggleDarkModeButton">ダークモード切替</button>
+        </div>
+        <div class="section">
+          <h2 class="section-title">ステータス</h2>
+          <p class="section-subtitle">ヘッダー下に表示する現在状態。</p>
+          <select class="select" id="statusSelect">
+            <option value="通常">通常</option>
+            <option value="仕事中">仕事中</option>
+            <option value="休憩中">休憩中</option>
+            <option value="帰宅中">帰宅中</option>
+            <option value="自宅">自宅</option>
+            <option value="就寝前">就寝前</option>
+          </select>
+        </div>
+        <div class="section">
+          <h2 class="section-title">データ</h2>
+          <p class="section-subtitle">バックアップは統計ページ下部から行えます。</p>
+          <details class="compact-details">
+            <summary>危険操作</summary>
+            <div class="details-body">
+              <div class="danger-zone">
+                <p class="section-subtitle">全タスク・履歴・設定を消します。</p>
+                <button class="ghost-button danger-button" type="button" id="resetAllButton">全データ初期化</button>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop hidden" id="taskDetailModal">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <h2 class="modal-title" id="taskDetailTitle">タスク詳細</h2>
+          <button class="modal-close" type="button" id="closeTaskDetailButton">×</button>
+        </div>
+        <div id="taskDetailBody"></div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop hidden" id="taskEditModal">
+      <div class="modal-panel">
+        <div class="modal-head">
+          <h2 class="modal-title">タスク編集</h2>
+          <button class="modal-close" type="button" id="closeTaskEditButton">×</button>
+        </div>
+        <form class="task-form" id="editTaskForm">
+          <input type="hidden" id="editTaskId" />
+          <div class="field block-field">
+            <label class="field-label" for="editTaskTitle">やること</label>
+            <input class="input" id="editTaskTitle" type="text" required />
+          </div>
+          <div class="form-row-2">
+            <div class="field inline-field">
+              <label class="field-label" for="editTaskSchedule">実施</label>
+              <select class="select" id="editTaskSchedule">
+                <option value="once">今日だけ</option>
+                <option value="daily">毎日</option>
+                <option value="weekly">毎週</option>
+                <option value="monthly">毎月</option>
+                <option value="interval">自由間隔</option>
+              </select>
+            </div>
+            <div class="field inline-field">
+              <label class="field-label" for="editTaskPriority">レベル</label>
+              <select class="select" id="editTaskPriority">
+                <option value="must">必須</option>
+                <option value="should">できれば</option>
+                <option value="extra">余力</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="field inline-field">
+              <label class="field-label" for="editTaskCategory">種類</label>
+              <select class="select" id="editTaskCategory">
+                <option value="仕事">仕事</option>
+                <option value="勉強">勉強</option>
+                <option value="生活">生活</option>
+                <option value="健康">健康</option>
+                <option value="趣味">趣味</option>
+                <option value="お金">お金</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
+            <div class="field inline-field">
+              <label class="field-label" for="editTaskDate">日付</label>
+              <input class="input" id="editTaskDate" type="date" />
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="field inline-field">
+              <label class="field-label" for="editWeeklyDay">曜日</label>
+              <select class="select" id="editWeeklyDay">
+                <option value="1">月曜</option><option value="2">火曜</option><option value="3">水曜</option>
+                <option value="4">木曜</option><option value="5">金曜</option><option value="6">土曜</option><option value="0">日曜</option>
+              </select>
+            </div>
+            <div class="field inline-field">
+              <label class="field-label" for="editMonthlyDay">月日</label>
+              <select class="select" id="editMonthlyDay">
+                <option value="1">1日</option><option value="5">5日</option><option value="10">10日</option>
+                <option value="15">15日</option><option value="20">20日</option><option value="25">25日</option><option value="end">月末</option>
+              </select>
+            </div>
+          </div>
+          <div class="field inline-field">
+            <label class="field-label" for="editIntervalDays">間隔</label>
+            <input class="input" id="editIntervalDays" type="number" min="2" max="365" />
+          </div>
+          <div class="form-row-2">
+            <div class="field inline-field">
+              <label class="field-label" for="editTaskNotify">通知</label>
+              <select class="select" id="editTaskNotify"><option value="off">なし</option><option value="on">あり</option></select>
+            </div>
+            <div class="field inline-field">
+              <label class="field-label" for="editTaskNotifyTime">時刻</label>
+              <input class="input" id="editTaskNotifyTime" type="time" />
+            </div>
+          </div>
+          <div class="field block-field">
+            <label class="field-label" for="editTaskUrl">URL</label>
+            <input class="input" id="editTaskUrl" type="url" />
+          </div>
+          <div class="field block-field">
+            <label class="field-label" for="editTaskNote">備考</label>
+            <textarea class="textarea" id="editTaskNote"></textarea>
+          </div>
+          <button class="primary-button" type="submit">保存</button>
+        </form>
+      </div>
+    </div>
 
     <div class="toast" id="appToast" role="status" aria-live="polite"></div>
 
@@ -1614,8 +2480,8 @@
       event listener = 入力・クリックを受け取る場所
     */
 
-    const STORAGE_KEY = "dailyCoreData_v10";
-    const OLD_KEYS = ["dailyCoreData_v09", "dailyCoreData_v08", "dailyCoreData_v07", "dailyCoreData_v06", "dailyCoreData_v05", "dailyCoreData_v04", "dailyCoreData_v03", "dailyCoreData_v02", "dailyCoreData_v01"];
+    const STORAGE_KEY = "dailyCoreData_v14";
+    const OLD_KEYS = ["dailyCoreData_v13", "dailyCoreData_v12", "dailyCoreData_v11", "dailyCoreData_v10", "dailyCoreData_v09", "dailyCoreData_v08", "dailyCoreData_v07", "dailyCoreData_v06", "dailyCoreData_v05", "dailyCoreData_v04", "dailyCoreData_v03", "dailyCoreData_v02", "dailyCoreData_v01"];
     const DAY_NAMES = ["日", "月", "火", "水", "木", "金", "土"];
 
     const initialData = {
@@ -1647,7 +2513,9 @@
         ]
       },
       settings: {
-        selectedMindset: null
+        selectedMindset: null,
+        darkMode: false,
+        status: "通常"
       }
     };
 
@@ -1701,10 +2569,13 @@
       if (hour >= 5 && hour < 12) {
         return { key: "morning", label: "朝", message: "朝は起動命令。今日の最低ラインと最優先を確認する。" };
       }
-      if (hour >= 12 && hour < 18) {
+      if (hour >= 12 && hour < 17) {
         return { key: "day", label: "昼", message: "昼は進行確認。タスクを増やすより、今あるものを終わらせる。" };
       }
-      if (hour >= 18 && hour < 22) {
+      if (hour >= 17 && hour < 19) {
+        return { key: "evening", label: "夕方", message: "夕方は切替地点。残り体力で今日の必須を選び直す。" };
+      }
+      if (hour >= 19 && hour < 22) {
         return { key: "evening", label: "帰宅後", message: "帰宅後は再配分。疲労込みで必須・できれば・余力に分け直す。" };
       }
       return { key: "night", label: "就寝前", message: "夜は戦果報告。できたことを回収して、明日に送るものを決める。" };
@@ -1798,6 +2669,7 @@
         notify: Boolean(task.notify),
         notifyTime: task.notifyTime || "",
         active: task.active !== false,
+        order: Number.isFinite(Number(task.order)) ? Number(task.order) : Date.now(),
         createdAt: task.createdAt || new Date().toISOString()
       };
     }
@@ -1949,6 +2821,7 @@
         notify,
         notifyTime,
         active: true,
+        order: Date.now(),
         createdAt: new Date().toISOString()
       };
 
@@ -2143,6 +3016,9 @@
         const p = priorityOrder[a.priority] - priorityOrder[b.priority];
         if (p !== 0) return p;
 
+        const manual = (a.order || 0) - (b.order || 0);
+        if (manual !== 0) return manual;
+
         const timeA = a.notifyTime || "99:99";
         const timeB = b.notifyTime || "99:99";
         return timeA.localeCompare(timeB);
@@ -2160,6 +3036,7 @@
     }
 
     function renderHeader() {
+      document.body.classList.toggle("dark-mode", Boolean(state.settings.darkMode));
       const todayKey = getTodayKey();
       const mode = getCurrentMode();
       const list = state.mindsets[mode.key] || [];
@@ -2170,6 +3047,19 @@
       document.getElementById("mindLabel").textContent = mode.key === "morning" ? "朝のマインドセット" : "今の一言";
       document.getElementById("modeMindset").textContent = selected || mode.message;
       document.getElementById("modeMessage").textContent = mode.message;
+      renderStatusChips();
+    }
+
+    function renderStatusChips() {
+      const statuses = ["通常", "仕事中", "休憩中", "帰宅中", "自宅", "就寝前"];
+      const current = state.settings.status || "通常";
+      document.getElementById("statusRow").innerHTML = `
+        <select class="status-header-select" id="headerStatusSelect" aria-label="ステータス">
+          ${statuses.map(status => `<option value="${status}" ${status === current ? "selected" : ""}>${status}</option>`).join("")}
+        </select>
+      `;
+      const selector = document.getElementById("statusSelect");
+      if (selector) selector.value = current;
     }
 
     function getDailyMindset(modeKey, list) {
@@ -2248,6 +3138,7 @@
           </div>
         `;
       }).join("");
+      setupDragHandlers();
     }
 
     function renderTrash() {
@@ -2273,6 +3164,159 @@
       `).join("");
     }
 
+
+    function openTaskDetail(taskId) {
+      const task = state.tasks.find(item => item.id === taskId);
+      if (!task) return;
+      document.getElementById("taskDetailTitle").textContent = task.title;
+      document.getElementById("taskDetailBody").innerHTML = `
+        <div class="detail-line"><strong>実施</strong>${getScheduleLabel(task)}</div>
+        <div class="detail-line"><strong>レベル</strong>${getPriorityLabel(task.priority)}</div>
+        <div class="detail-line"><strong>種類</strong>${escapeHtml(task.category)}</div>
+        <div class="detail-line"><strong>日付/開始日</strong>${escapeHtml(task.date || task.startDate || "-")}</div>
+        <div class="detail-line"><strong>通知</strong>${task.notify ? `${escapeHtml(task.notifyTime || "時刻未設定")}` : "なし"}</div>
+        <div class="detail-line"><strong>URL</strong>${task.url ? `<a href="${escapeAttribute(task.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(task.url)}</a>` : "なし"}</div>
+        <div class="detail-line"><strong>備考</strong>${escapeHtml(task.note || "なし")}</div>
+        <div class="button-row" style="margin-top:12px;">
+          <button class="primary-button" type="button" data-edit-task="${task.id}">編集</button>
+          <button class="ghost-button" type="button" data-delete-task="${task.id}">削除</button>
+        </div>
+      `;
+      document.getElementById("taskDetailModal").classList.remove("hidden");
+    }
+
+    function openEditTask(taskId) {
+      const task = state.tasks.find(item => item.id === taskId);
+      if (!task) return;
+      document.getElementById("editTaskId").value = task.id;
+      document.getElementById("editTaskTitle").value = task.title || "";
+      document.getElementById("editTaskSchedule").value = task.schedule || "once";
+      document.getElementById("editTaskPriority").value = task.priority || "should";
+      document.getElementById("editTaskCategory").value = task.category || "その他";
+      document.getElementById("editTaskDate").value = task.date || task.startDate || getTodayKey();
+      document.getElementById("editWeeklyDay").value = String(task.weekday ?? 1);
+      document.getElementById("editMonthlyDay").value = String(task.monthDay || "1");
+      document.getElementById("editIntervalDays").value = task.intervalDays || 7;
+      document.getElementById("editTaskNotify").value = task.notify ? "on" : "off";
+      document.getElementById("editTaskNotifyTime").value = task.notifyTime || "";
+      document.getElementById("editTaskUrl").value = task.url || "";
+      document.getElementById("editTaskNote").value = task.note || "";
+      document.getElementById("taskDetailModal").classList.add("hidden");
+      document.getElementById("taskEditModal").classList.remove("hidden");
+    }
+
+    function saveEditedTask() {
+      const id = document.getElementById("editTaskId").value;
+      const task = state.tasks.find(item => item.id === id);
+      if (!task) return;
+      task.title = document.getElementById("editTaskTitle").value.trim();
+      task.schedule = document.getElementById("editTaskSchedule").value;
+      task.priority = document.getElementById("editTaskPriority").value;
+      task.category = document.getElementById("editTaskCategory").value;
+      task.date = document.getElementById("editTaskDate").value || getTodayKey();
+      task.startDate = task.date;
+      task.weekday = Number(document.getElementById("editWeeklyDay").value);
+      task.monthDay = document.getElementById("editMonthlyDay").value;
+      task.intervalDays = Math.max(2, Number(document.getElementById("editIntervalDays").value || 7));
+      task.notify = document.getElementById("editTaskNotify").value === "on";
+      task.notifyTime = task.notify ? document.getElementById("editTaskNotifyTime").value : "";
+      task.url = document.getElementById("editTaskUrl").value.trim();
+      task.note = document.getElementById("editTaskNote").value.trim();
+      saveData();
+      document.getElementById("taskEditModal").classList.add("hidden");
+      showToast(`更新しました：${task.title}`);
+      renderAll();
+    }
+
+    function moveTask(taskId, direction) {
+      const active = [...state.tasks].sort((a, b) => (a.order || 0) - (b.order || 0));
+      const index = active.findIndex(task => task.id === taskId);
+      const targetIndex = index + direction;
+      if (index < 0 || targetIndex < 0 || targetIndex >= active.length) return;
+      const a = active[index];
+      const b = active[targetIndex];
+      const temp = a.order || index;
+      a.order = b.order || targetIndex;
+      b.order = temp;
+      saveData();
+      renderAll();
+    }
+
+    let dragTaskId = null;
+
+    function reorderTaskBefore(dragId, targetId) {
+      if (!dragId || !targetId || dragId === targetId) return;
+      const ordered = [...state.tasks].sort((a, b) => (a.order || 0) - (b.order || 0));
+      const from = ordered.findIndex(task => task.id === dragId);
+      const to = ordered.findIndex(task => task.id === targetId);
+      if (from < 0 || to < 0) return;
+
+      const [item] = ordered.splice(from, 1);
+      ordered.splice(to, 0, item);
+      ordered.forEach((task, index) => {
+        task.order = Date.now() + index;
+      });
+
+      saveData();
+      renderAll();
+      showToast("並び替えました");
+    }
+
+    function setupDragHandlers() {
+      document.querySelectorAll("[data-drag-handle]").forEach(handle => {
+        handle.addEventListener("pointerdown", event => {
+          dragTaskId = handle.dataset.dragHandle;
+          const row = handle.closest(".manager-row");
+          if (row) row.classList.add("dragging");
+          handle.setPointerCapture?.(event.pointerId);
+        });
+
+        handle.addEventListener("pointerup", event => {
+          const row = handle.closest(".manager-row");
+          if (row) row.classList.remove("dragging");
+          document.querySelectorAll(".manager-row.drag-over").forEach(item => item.classList.remove("drag-over"));
+          dragTaskId = null;
+        });
+      });
+
+      document.querySelectorAll(".manager-row").forEach(row => {
+        row.addEventListener("pointerenter", () => {
+          if (!dragTaskId) return;
+          row.classList.add("drag-over");
+        });
+        row.addEventListener("pointerleave", () => {
+          row.classList.remove("drag-over");
+        });
+        row.addEventListener("pointerup", () => {
+          if (!dragTaskId) return;
+          const targetHandle = row.querySelector("[data-drag-handle]");
+          const targetId = targetHandle?.dataset.dragHandle;
+          reorderTaskBefore(dragTaskId, targetId);
+          dragTaskId = null;
+        });
+      });
+    }
+
+    function showCalendarDetail(dateKey) {
+      const review = state.reviews.find(item => item.date === dateKey);
+      const tasks = getTasksForDate(dateKey, false);
+      const done = tasks.filter(task => task.completed);
+      const left = tasks.filter(task => !task.completed);
+      const area = document.getElementById("calendarDetail");
+      area.classList.remove("hidden");
+      area.innerHTML = `
+        <strong>${formatDateLabel(dateKey)}</strong><br>
+        達成率：${review ? review.achievementRate : getAchievement(tasks)}%<br>
+        完了：${done.length}件 / 未完了：${left.length}件<br>
+        ${review ? `気分：${escapeHtml(review.mood)} / 睡眠：${formatSleep(review.sleepMinutes)}<br>一言：${escapeHtml(review.memo || "未入力")}` : "レビュー未保存"}
+      `;
+    }
+
+    function openSettings() {
+      document.getElementById("settingsModal").classList.remove("hidden");
+      document.getElementById("statusSelect").value = state.settings.status || "通常";
+    }
+
     function createManagerRowHtml(task) {
       const checked = task.completed ? "checked" : "";
       const originDate = task.originDate || task.renderDate || getTodayKey();
@@ -2286,7 +3330,11 @@
             <p class="manager-row-title">${escapeHtml(task.title)}</p>
             <p class="manager-row-meta">${getPriorityLabel(task.priority)} / ${getScheduleLabel(task)} / ${escapeHtml(task.category)}${notice}${linkMark}</p>
           </div>
-          <button class="delete-task-button" type="button" data-delete-task="${task.id}" aria-label="削除">×</button>
+          <div class="manager-actions">
+            <button class="drag-handle" type="button" data-drag-handle="${task.id}" aria-label="並び替え">☰</button>
+            <button class="tiny-button" type="button" data-detail-task="${task.id}">詳</button>
+            <button class="tiny-button" type="button" data-edit-task="${task.id}">編</button>
+          </div>
         </div>
       `;
     }
@@ -2328,6 +3376,7 @@
             ${noteHtml}
           </div>
           <div class="task-actions">
+            <button class="tiny-button" type="button" data-detail-task="${task.id}" aria-label="詳細">詳</button>
             <button class="delete-task-button" type="button" data-delete-task="${task.id}" aria-label="削除">×</button>
           </div>
         </div>
@@ -2546,9 +3595,10 @@
         const review = state.reviews.find(item => item.date === dateKey);
         const rate = review ? review.achievementRate : getAchievement(getTasksForDate(dateKey, false));
         const isToday = dateKey === todayKey ? "is-today" : "";
+        const hasReview = review ? "has-review" : "";
 
         cells.push(`
-          <div class="calendar-cell ${isToday}">
+          <div class="calendar-cell ${isToday} ${hasReview}" data-calendar-date="${dateKey}">
             <strong>${day}</strong>
             <span class="calendar-rate">${rate ? rate + "%" : "-"}</span>
           </div>
@@ -2650,7 +3700,30 @@
     }
 
     function exportData() {
-      document.getElementById("backupArea").value = JSON.stringify(state, null, 2);
+      const area = document.getElementById("backupArea");
+      area.value = JSON.stringify(state, null, 2);
+      area.focus();
+      area.select();
+      area.classList.add("copy-flash");
+      setTimeout(() => area.classList.remove("copy-flash"), 400);
+      showToast("JSONを書き出しました。必要ならコピーできます。");
+    }
+
+    async function copyBackupData() {
+      const area = document.getElementById("backupArea");
+      if (!area.value.trim()) {
+        area.value = JSON.stringify(state, null, 2);
+      }
+
+      try {
+        await navigator.clipboard.writeText(area.value);
+        showToast("JSONをコピーしました");
+      } catch (error) {
+        area.focus();
+        area.select();
+        document.execCommand("copy");
+        showToast("JSONを選択しました。コピーできない場合は手動でコピーしてください。");
+      }
     }
 
     function importData() {
@@ -2675,6 +3748,8 @@
       if (!ok) return;
       state = structuredClone(initialData);
       saveData();
+      const modal = document.getElementById("settingsModal");
+      if (modal) modal.classList.add("hidden");
       renderAll();
     }
 
@@ -2752,6 +3827,38 @@
       });
 
       document.addEventListener("click", event => {
+        const detailTaskId = event.target.dataset.detailTask;
+        if (detailTaskId) {
+          openTaskDetail(detailTaskId);
+          return;
+        }
+
+        const editTaskId = event.target.dataset.editTask;
+        if (editTaskId) {
+          openEditTask(editTaskId);
+          return;
+        }
+
+        const moveTaskId = event.target.dataset.moveTask;
+        if (moveTaskId) {
+          moveTask(moveTaskId, Number(event.target.dataset.moveDir));
+          return;
+        }
+
+        const calendarNode = event.target.closest("[data-calendar-date]");
+        if (calendarNode) {
+          showCalendarDetail(calendarNode.dataset.calendarDate);
+          return;
+        }
+
+        const statusValue = event.target.dataset.status;
+        if (statusValue) {
+          state.settings.status = statusValue;
+          saveData();
+          renderAll();
+          return;
+        }
+
         const taskId = event.target.dataset.deleteTask;
         if (taskId) {
           deleteTask(taskId);
@@ -2808,8 +3915,38 @@
       document.getElementById("addMindsetButton").addEventListener("click", addMindset);
       document.getElementById("mindsetSlot").addEventListener("change", renderMindsets);
       document.getElementById("exportButton").addEventListener("click", exportData);
+      document.getElementById("copyBackupButton").addEventListener("click", copyBackupData);
       document.getElementById("importButton").addEventListener("click", importData);
       document.getElementById("resetAllButton").addEventListener("click", resetAllData);
+      document.getElementById("openSettingsButton").addEventListener("click", openSettings);
+      document.getElementById("closeSettingsButton").addEventListener("click", () => document.getElementById("settingsModal").classList.add("hidden"));
+      document.getElementById("toggleDarkModeButton").addEventListener("click", () => {
+        state.settings.darkMode = !state.settings.darkMode;
+        saveData();
+        renderAll();
+        showToast(state.settings.darkMode ? "ダークモードON" : "ダークモードOFF");
+      });
+      document.getElementById("statusSelect").addEventListener("change", event => {
+        state.settings.status = event.target.value;
+        saveData();
+        renderAll();
+        showToast(`ステータス：${event.target.value}`);
+      });
+
+      document.addEventListener("change", event => {
+        if (event.target.id === "headerStatusSelect") {
+          state.settings.status = event.target.value;
+          saveData();
+          renderAll();
+          showToast(`ステータス：${event.target.value}`);
+        }
+      });
+      document.getElementById("closeTaskDetailButton").addEventListener("click", () => document.getElementById("taskDetailModal").classList.add("hidden"));
+      document.getElementById("closeTaskEditButton").addEventListener("click", () => document.getElementById("taskEditModal").classList.add("hidden"));
+      document.getElementById("editTaskForm").addEventListener("submit", event => {
+        event.preventDefault();
+        saveEditedTask();
+      });
     });
   </script>
 </body>
