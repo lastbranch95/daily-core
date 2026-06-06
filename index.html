@@ -2466,6 +2466,14 @@
     </nav>
   </div>
 
+  <!-- Supabase接続設定：自分のProject URL / anon public keyに差し替える -->
+  <script>
+    window.DAILY_CORE_SUPABASE_URL = "https://hopbmcqdthszulqegqlq.supabase.co";
+    window.DAILY_CORE_SUPABASE_ANON_KEY = "sb_publishable_AWDBKP4edc2ToZUQJFi8wQ_3dCQ_b0k";
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="taskStorage.supabase.js"></script>
+
   <script>
     /*
       今回の役割一覧
@@ -2746,12 +2754,12 @@
     }
 
     function getTasksForDate(dateKey, includeOverdue = false) {
-      const due = state.tasks
+      const due = DailyTaskStorage.getTasks(state)
         .filter(task => isTaskScheduledOn(task, dateKey))
         .map(task => materializeTask(task, dateKey));
 
       if (includeOverdue) {
-        const overdue = state.tasks
+        const overdue = DailyTaskStorage.getTasks(state)
           .filter(task => isOverdueOnceTask(task, dateKey))
           .map(task => materializeTask(task, dateKey, { originDate: task.date, isOverdue: true }));
         return [...overdue, ...due];
@@ -2829,7 +2837,7 @@
       if (schedule === "monthly") task.startDate = date;
       if (schedule === "interval") task.startDate = date;
 
-      state.tasks.push(task);
+      DailyTaskStorage.saveTask(state, task);
       saveData();
       showToast(`追加しました：${title}`);
       document.getElementById("taskTitle").value = "";
@@ -2850,14 +2858,14 @@
     function toggleTask(taskId, originDate) {
       const current = getCompletion(originDate, taskId);
       setCompletion(originDate, taskId, !current);
-      const task = state.tasks.find(item => item.id === taskId);
+      const task = DailyTaskStorage.getTaskById(state, taskId);
       saveData();
       if (task) showToast(current ? `未完了に戻しました：${task.title}` : `完了：${task.title}`);
       renderAll();
     }
 
     function deleteTask(taskId) {
-      const task = state.tasks.find(item => item.id === taskId);
+      const task = DailyTaskStorage.getTaskById(state, taskId);
       if (!task) return;
 
       const ok = confirm(`「${task.title}」を削除しますか？ 後から「削除したリスト」から復帰できます。`);
@@ -2869,7 +2877,7 @@
       });
       state.deletedTasks = state.deletedTasks.slice(0, 30);
 
-      state.tasks = state.tasks.filter(item => item.id !== taskId);
+      DailyTaskStorage.deleteTask(state, taskId);
       saveData();
       showToast(`削除しました：${task.title}`);
       renderAll();
@@ -2882,11 +2890,11 @@
       const restored = { ...task };
       delete restored.deletedAt;
 
-      if (state.tasks.some(item => item.id === restored.id)) {
+      if (DailyTaskStorage.getTasks(state).some(item => item.id === restored.id)) {
         restored.id = `task-${Date.now()}-${Math.random().toString(16).slice(2)}`;
       }
 
-      state.tasks.push(restored);
+      DailyTaskStorage.saveTask(state, restored);
       state.deletedTasks = state.deletedTasks.filter(item => item.id !== taskId);
       saveData();
       showToast(`復帰しました：${restored.title}`);
@@ -2906,7 +2914,10 @@
         .filter(task => task.schedule === "once" && task.completed)
         .map(task => task.id);
 
-      state.tasks = state.tasks.filter(task => !completedOnceIds.includes(task.id));
+      DailyTaskStorage.replaceTasks(
+        state,
+        DailyTaskStorage.getTasks(state).filter(task => !completedOnceIds.includes(task.id))
+      );
       saveData();
       renderAll();
     }
@@ -2935,10 +2946,11 @@
       if (!ok) return;
 
       carryTargets.forEach(task => {
-        const realTask = state.tasks.find(item => item.id === task.id);
+        const realTask = DailyTaskStorage.getTaskById(state, task.id);
         if (!realTask) return;
         realTask.date = tomorrowKey;
         realTask.startDate = tomorrowKey;
+        DailyTaskStorage.updateTask(state, realTask);
       });
 
       saveData();
@@ -3108,7 +3120,7 @@
 
     function renderTaskManager() {
       const area = document.getElementById("taskManager");
-      const source = currentTaskFilter === "today" ? getTodayTasks() : state.tasks.map(task => materializeTask(task, getTodayKey()));
+      const source = currentTaskFilter === "today" ? getTodayTasks() : DailyTaskStorage.getTasks(state).map(task => materializeTask(task, getTodayKey()));
       const tasks = sortTasks(source);
 
       if (!tasks.length) {
@@ -3166,7 +3178,7 @@
 
 
     function openTaskDetail(taskId) {
-      const task = state.tasks.find(item => item.id === taskId);
+      const task = DailyTaskStorage.getTaskById(state, taskId);
       if (!task) return;
       document.getElementById("taskDetailTitle").textContent = task.title;
       document.getElementById("taskDetailBody").innerHTML = `
@@ -3186,7 +3198,7 @@
     }
 
     function openEditTask(taskId) {
-      const task = state.tasks.find(item => item.id === taskId);
+      const task = DailyTaskStorage.getTaskById(state, taskId);
       if (!task) return;
       document.getElementById("editTaskId").value = task.id;
       document.getElementById("editTaskTitle").value = task.title || "";
@@ -3207,7 +3219,7 @@
 
     function saveEditedTask() {
       const id = document.getElementById("editTaskId").value;
-      const task = state.tasks.find(item => item.id === id);
+      const task = DailyTaskStorage.getTaskById(state, id);
       if (!task) return;
       task.title = document.getElementById("editTaskTitle").value.trim();
       task.schedule = document.getElementById("editTaskSchedule").value;
@@ -3222,6 +3234,7 @@
       task.notifyTime = task.notify ? document.getElementById("editTaskNotifyTime").value : "";
       task.url = document.getElementById("editTaskUrl").value.trim();
       task.note = document.getElementById("editTaskNote").value.trim();
+      DailyTaskStorage.updateTask(state, task);
       saveData();
       document.getElementById("taskEditModal").classList.add("hidden");
       showToast(`更新しました：${task.title}`);
@@ -3229,7 +3242,7 @@
     }
 
     function moveTask(taskId, direction) {
-      const active = [...state.tasks].sort((a, b) => (a.order || 0) - (b.order || 0));
+      const active = [...DailyTaskStorage.getTasks(state)].sort((a, b) => (a.order || 0) - (b.order || 0));
       const index = active.findIndex(task => task.id === taskId);
       const targetIndex = index + direction;
       if (index < 0 || targetIndex < 0 || targetIndex >= active.length) return;
@@ -3246,7 +3259,7 @@
 
     function reorderTaskBefore(dragId, targetId) {
       if (!dragId || !targetId || dragId === targetId) return;
-      const ordered = [...state.tasks].sort((a, b) => (a.order || 0) - (b.order || 0));
+      const ordered = [...DailyTaskStorage.getTasks(state)].sort((a, b) => (a.order || 0) - (b.order || 0));
       const from = ordered.findIndex(task => task.id === dragId);
       const to = ordered.findIndex(task => task.id === targetId);
       if (from < 0 || to < 0) return;
@@ -3766,7 +3779,12 @@
         .replaceAll("'", "&#039;");
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
+      if (window.DailyTaskStorage && typeof DailyTaskStorage.init === "function") {
+        await DailyTaskStorage.init(state);
+        saveData();
+      }
+
       const todayKey = getTodayKey();
       document.getElementById("taskDate").value = todayKey;
 
