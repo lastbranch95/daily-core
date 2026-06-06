@@ -1394,6 +1394,77 @@
     }
 
 
+
+    .auth-panel {
+      margin: 10px 12px 0;
+      padding: 10px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    .auth-panel-title {
+      margin: 0 0 4px;
+      font-size: 0.9rem;
+      font-weight: 950;
+    }
+
+    .auth-panel-text {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.45;
+    }
+
+    .auth-form {
+      display: grid;
+      gap: 8px;
+    }
+
+    .auth-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .auth-input {
+      width: 100%;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      font-size: 16px;
+    }
+
+    .auth-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    body.dark-mode .auth-panel {
+      background: rgba(17, 24, 39, 0.96);
+      border-color: #334155;
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .auth-input {
+      background: #020617;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+
+    @media (max-width: 520px) {
+      .auth-form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
     #backupArea {
       min-height: 120px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -1865,6 +1936,77 @@
     }
 
 
+
+    .auth-panel {
+      margin: 10px 12px 0;
+      padding: 10px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    .auth-panel-title {
+      margin: 0 0 4px;
+      font-size: 0.9rem;
+      font-weight: 950;
+    }
+
+    .auth-panel-text {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.45;
+    }
+
+    .auth-form {
+      display: grid;
+      gap: 8px;
+    }
+
+    .auth-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .auth-input {
+      width: 100%;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      font-size: 16px;
+    }
+
+    .auth-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    body.dark-mode .auth-panel {
+      background: rgba(17, 24, 39, 0.96);
+      border-color: #334155;
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .auth-input {
+      background: #020617;
+      color: #e5e7eb;
+      border-color: #334155;
+    }
+
+    @media (max-width: 520px) {
+      .auth-form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
     #backupArea {
       min-height: 120px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -1923,6 +2065,18 @@
         <p class="mind-text" id="modeMindset">読み込み中...</p>
       </div>
     </header>
+
+    <section class="auth-panel" id="authPanel">
+      <p class="auth-panel-title">クラウド同期</p>
+      <p class="auth-panel-text">ログインすると、自分のDaily CoreだけをSupabaseと同期します。</p>
+      <form class="auth-form" id="authLoginForm">
+        <div class="auth-form-row">
+          <input class="auth-input" id="authEmail" type="email" placeholder="Email" autocomplete="username" />
+          <input class="auth-input" id="authPassword" type="password" placeholder="Password" autocomplete="current-password" />
+          <button class="small-button" type="submit">ログイン</button>
+        </div>
+      </form>
+    </section>
 
     <main class="content">
       <!-- ① ホーム -->
@@ -3779,11 +3933,99 @@
         .replaceAll("'", "&#039;");
     }
 
+
+    function renderAuthPanel() {
+      const panel = document.getElementById("authPanel");
+      if (!panel) return;
+
+      if (!window.DailyTaskStorage || typeof DailyTaskStorage.getAuthState !== "function") {
+        panel.innerHTML = `
+          <p class="auth-panel-title">クラウド同期</p>
+          <p class="auth-panel-text">StorageAPIを読み込めていません。taskStorage.supabase.js を確認してください。</p>
+        `;
+        return;
+      }
+
+      const auth = DailyTaskStorage.getAuthState();
+
+      if (auth.signedIn) {
+        panel.innerHTML = `
+          <div class="auth-status-row">
+            <div>
+              <p class="auth-panel-title">クラウド同期：ログイン中</p>
+              <p class="auth-panel-text">${escapeHtml(auth.email || "認証済み")} のTodoだけを同期します。</p>
+            </div>
+            <button class="small-button" type="button" id="authLogoutButton">ログアウト</button>
+          </div>
+        `;
+        return;
+      }
+
+      panel.innerHTML = `
+        <p class="auth-panel-title">クラウド同期：未ログイン</p>
+        <p class="auth-panel-text">ログインすると、自分のDaily CoreだけをSupabaseと同期します。</p>
+        <form class="auth-form" id="authLoginForm">
+          <div class="auth-form-row">
+            <input class="auth-input" id="authEmail" type="email" placeholder="Email" autocomplete="username" required />
+            <input class="auth-input" id="authPassword" type="password" placeholder="Password" autocomplete="current-password" required />
+            <button class="small-button" type="submit">ログイン</button>
+          </div>
+        </form>
+      `;
+    }
+
+    function setupAuthPanel() {
+      const panel = document.getElementById("authPanel");
+      if (!panel) return;
+
+      panel.addEventListener("submit", async event => {
+        if (event.target.id !== "authLoginForm") return;
+        event.preventDefault();
+
+        const email = document.getElementById("authEmail")?.value.trim();
+        const password = document.getElementById("authPassword")?.value;
+
+        if (!email || !password) {
+          showToast("メールとパスワードを入力してください。");
+          return;
+        }
+
+        try {
+          await DailyTaskStorage.signIn(email, password);
+          await DailyTaskStorage.init(state);
+          saveData();
+          renderAll();
+          renderAuthPanel();
+          showToast("クラウド同期にログインしました。");
+        } catch (error) {
+          console.error(error);
+          showToast("ログインに失敗しました。");
+        }
+      });
+
+      panel.addEventListener("click", async event => {
+        if (event.target.id !== "authLogoutButton") return;
+
+        try {
+          await DailyTaskStorage.signOut();
+          renderAuthPanel();
+          showToast("ログアウトしました。");
+        } catch (error) {
+          console.error(error);
+          showToast("ログアウトに失敗しました。");
+        }
+      });
+    }
+
+
     document.addEventListener("DOMContentLoaded", async () => {
       if (window.DailyTaskStorage && typeof DailyTaskStorage.init === "function") {
         await DailyTaskStorage.init(state);
         saveData();
       }
+
+      setupAuthPanel();
+      renderAuthPanel();
 
       const todayKey = getTodayKey();
       document.getElementById("taskDate").value = todayKey;

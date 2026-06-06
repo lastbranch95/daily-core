@@ -18,6 +18,8 @@
 
   let client = null;
   let online = false;
+  let currentUser = null;
+  let currentUserId = null;
 
   function ensureTaskList(state) {
     if (!state || !Array.isArray(state.tasks)) {
@@ -29,6 +31,7 @@
   function toDbTask(task) {
     return {
       id: task.id,
+      user_id: currentUserId,
       title: task.title || "",
       category: task.category || "その他",
       priority: task.priority || "should",
@@ -94,7 +97,27 @@
   async function init(state) {
     ensureTaskList(state);
     const supabase = initClient();
-    if (!supabase) return { online: false, count: state.tasks.length };
+    if (!supabase) {
+      return { online: false, signedIn: false, count: state.tasks.length };
+    }
+
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+    if (sessionError) {
+      online = false;
+      currentUser = null;
+      currentUserId = null;
+      logSyncError("セッション取得に失敗。localStorageのtasksで起動します。", sessionError);
+      return { online: false, signedIn: false, count: state.tasks.length, error: sessionError };
+    }
+
+    currentUser = sessionData?.session?.user || null;
+    currentUserId = currentUser?.id || null;
+
+    if (!currentUserId) {
+      online = false;
+      return { online: false, signedIn: false, count: state.tasks.length };
+    }
 
     const { data, error } = await supabase
       .from(TABLE_NAME)
@@ -105,11 +128,58 @@
     if (error) {
       online = false;
       logSyncError("初期取得に失敗。localStorageのtasksで起動します。", error);
-      return { online: false, count: state.tasks.length, error };
+      return { online: false, signedIn: true, count: state.tasks.length, error };
     }
 
+    online = true;
     state.tasks = (data || []).map(fromDbTask).filter(task => task.id && task.title);
-    return { online: true, count: state.tasks.length };
+    return { online: true, signedIn: true, count: state.tasks.length };
+  }
+
+  async function signIn(email, password) {
+    const supabase = initClient();
+    if (!supabase) {
+      throw new Error("Supabase設定が未入力です。");
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      online = false;
+      currentUser = null;
+      currentUserId = null;
+      throw error;
+    }
+
+    currentUser = data?.user || data?.session?.user || null;
+    currentUserId = currentUser?.id || null;
+    online = Boolean(currentUserId);
+    return currentUser;
+  }
+
+  async function signOut() {
+    const supabase = initClient();
+    if (!supabase) return;
+
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      throw error;
+    }
+
+    online = false;
+    currentUser = null;
+    currentUserId = null;
+  }
+
+  function getAuthState() {
+    return {
+      online,
+      signedIn: Boolean(currentUserId),
+      user: currentUser,
+      userId: currentUserId,
+      email: currentUser?.email || ""
+    };
   }
 
   function getTasks(state) {
@@ -127,7 +197,7 @@
 
     ensureTaskList(state).push(task);
 
-    if (online && client) {
+    if (online && client && currentUserId) {
       client.from(TABLE_NAME)
         .upsert(toDbTask(task), { onConflict: "id" })
         .then(({ error }) => {
@@ -153,7 +223,7 @@
       tasks[index] = merged;
     }
 
-    if (online && client) {
+    if (online && client && currentUserId) {
       client.from(TABLE_NAME)
         .upsert(toDbTask(merged), { onConflict: "id" })
         .then(({ error }) => {
@@ -188,7 +258,7 @@
     }
     state.tasks = tasks;
 
-    if (online && client) {
+    if (online && client && currentUserId) {
       const rows = tasks.map(toDbTask);
       client.from(TABLE_NAME)
         .upsert(rows, { onConflict: "id" })
@@ -201,8 +271,11 @@
   }
 
   window.DailyTaskStorage = {
-    mode: "supabase",
+    mode: "supabase-auth",
     init,
+    signIn,
+    signOut,
+    getAuthState,
     getTasks,
     getTaskById,
     saveTask,
