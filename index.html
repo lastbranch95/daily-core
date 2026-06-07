@@ -3154,14 +3154,27 @@
       return { must: "必須", should: "できれば", extra: "余力" }[priority] || "通常";
     }
 
-    function getScheduleLabel(task) {
-      if (task.schedule === "once") return task.isOverdue ? "期限超過" : "今日";
-      if (task.schedule === "daily") return "毎日";
-      if (task.schedule === "weekly") return `毎週${DAY_NAMES[Number(task.weekday)]}`;
-      if (task.schedule === "monthly") return task.monthDay === "end" ? "毎月末" : `毎月${task.monthDay}日`;
-      if (task.schedule === "interval") return `${task.intervalDays}日に1回`;
-      return "予定";
+function getScheduleLabel(task) {
+  if (task.schedule === "once") {
+    if (task.isOverdue) return "期限超過";
+
+    if (task.date === getTodayKey()) {
+      return "今日";
     }
+
+    if (task.date) {
+      return "指定日";
+    }
+
+    return "単発";
+  }
+
+  if (task.schedule === "daily") return "毎日";
+  if (task.schedule === "weekly") return `毎週${DAY_NAMES[Number(task.weekday)]}`;
+  if (task.schedule === "monthly") return task.monthDay === "end" ? "毎月末" : `毎月${task.monthDay}日`;
+  if (task.schedule === "interval") return `${task.intervalDays}日に1回`;
+  return "予定";
+}
 
     function isNotifyDue(task) {
       if (!task.notify || !task.notifyTime || task.completed) return false;
